@@ -55,7 +55,8 @@ export default function WarrantyClaimIndex({ claims, hasAppliances }: { claims: 
                                         <tr key={claim.id} className="border-t">
                                             <td className="p-3">{claim.claim_date}</td>
                                             <td className="p-3">
-                                                {claim.warranty_policy.appliance.customer.name} / {claim.warranty_policy.appliance.appliance_type} ({claim.warranty_policy.appliance.serial_number})
+                                                {claim.warranty_policy.appliance.customer.name} / {claim.warranty_policy.appliance.appliance_type} (
+                                                {claim.warranty_policy.appliance.serial_number})
                                             </td>
                                             <td className="max-w-sm p-3">{claim.defect_description}</td>
                                             <td className="p-3 capitalize">{claim.claim_status}</td>
@@ -82,10 +83,12 @@ export default function WarrantyClaimIndex({ claims, hasAppliances }: { claims: 
                     </>
                 ) : (
                     <div className="rounded-lg border border-dashed px-6 py-12 text-center">
-                        <ShieldCheck className="mx-auto size-9 text-muted-foreground" aria-hidden="true" />
+                        <ShieldCheck className="text-muted-foreground mx-auto size-9" aria-hidden="true" />
                         <h2 className="mt-4 font-medium">No warranty claims filed yet</h2>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                            {hasAppliances ? 'Claims filed for your registered appliances will appear here.' : 'Register an appliance first so you can file a claim against its warranty.'}
+                        <p className="text-muted-foreground mt-1 text-sm">
+                            {hasAppliances
+                                ? 'Claims filed for your registered appliances will appear here.'
+                                : 'Register an appliance first so you can file a claim against its warranty.'}
                         </p>
                         <Button className="mt-5" variant={hasAppliances ? 'default' : 'outline'} asChild>
                             <Link href={hasAppliances ? route('warranty-claims.create') : route('appliances.create')}>

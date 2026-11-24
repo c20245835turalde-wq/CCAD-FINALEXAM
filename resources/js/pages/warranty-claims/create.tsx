@@ -28,7 +28,12 @@ export default function WarrantyClaimCreate({ appliances }: { appliances: Applia
     }
 
     return (
-        <AppLayout breadcrumbs={[{ title: 'Warranty claims', href: '/warranty-claims' }, { title: 'File claim', href: '/warranty-claims/create' }]}>
+        <AppLayout
+            breadcrumbs={[
+                { title: 'Warranty claims', href: '/warranty-claims' },
+                { title: 'File claim', href: '/warranty-claims/create' },
+            ]}
+        >
             <Head title="File warranty claim" />
             <div className="max-w-2xl space-y-6 p-4">
                 <h1 className="text-2xl font-semibold">File warranty claim</h1>
@@ -37,7 +42,7 @@ export default function WarrantyClaimCreate({ appliances }: { appliances: Applia
                         <Label htmlFor="appliance_id">Appliance</Label>
                         <select
                             id="appliance_id"
-                            className="h-10 rounded-md border border-input bg-background px-3"
+                            className="border-input bg-background h-10 rounded-md border px-3"
                             value={data.appliance_id}
                             onChange={(event) => setData('appliance_id', event.target.value)}
                             required
@@ -53,14 +58,20 @@ export default function WarrantyClaimCreate({ appliances }: { appliances: Applia
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="claim_date">Claim date</Label>
-                        <Input id="claim_date" type="date" value={data.claim_date} onChange={(event) => setData('claim_date', event.target.value)} required />
+                        <Input
+                            id="claim_date"
+                            type="date"
+                            value={data.claim_date}
+                            onChange={(event) => setData('claim_date', event.target.value)}
+                            required
+                        />
                         <InputError message={errors.claim_date} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="defect_description">Defect description</Label>
                         <textarea
                             id="defect_description"
-                            className="min-h-28 rounded-md border border-input bg-background px-3 py-2"
+                            className="border-input bg-background min-h-28 rounded-md border px-3 py-2"
                             value={data.defect_description}
                             onChange={(event) => setData('defect_description', event.target.value)}
                             required
@@ -71,7 +82,7 @@ export default function WarrantyClaimCreate({ appliances }: { appliances: Applia
                         <Label htmlFor="claim_status">Claim status</Label>
                         <select
                             id="claim_status"
-                            className="h-10 rounded-md border border-input bg-background px-3"
+                            className="border-input bg-background h-10 rounded-md border px-3"
                             value={data.claim_status}
                             onChange={(event) => setData('claim_status', event.target.value)}
                             required

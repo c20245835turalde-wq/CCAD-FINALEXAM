@@ -1,10 +1,9 @@
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Refrigerator, ShieldCheck } from 'lucide-react';
+import { LayoutGrid, Refrigerator, ShieldCheck } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -24,11 +23,6 @@ const mainNavItems: NavItem[] = [
         icon: ShieldCheck,
     },
 ];
-
-const footerNavItems: NavItem[] = [
-
-];
-
 export function AppSidebar() {
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -48,7 +42,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter className="flex flex-col gap-2 mb-10">
+            <SidebarFooter className="mb-10 flex flex-col gap-2">
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

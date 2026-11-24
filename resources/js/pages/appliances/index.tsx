@@ -77,9 +77,11 @@ export default function ApplianceIndex({ appliances }: { appliances: Paginated<A
                     </>
                 ) : (
                     <div className="rounded-lg border border-dashed px-6 py-12 text-center">
-                        <Refrigerator className="mx-auto size-9 text-muted-foreground" aria-hidden="true" />
+                        <Refrigerator className="text-muted-foreground mx-auto size-9" aria-hidden="true" />
                         <h2 className="mt-4 font-medium">No appliances registered yet</h2>
-                        <p className="mt-1 text-sm text-muted-foreground">Register an appliance to keep its warranty and customer details in one place.</p>
+                        <p className="text-muted-foreground mt-1 text-sm">
+                            Register an appliance to keep its warranty and customer details in one place.
+                        </p>
                         <Button className="mt-5" asChild>
                             <Link href={route('appliances.create')}>Register your first appliance</Link>
                         </Button>

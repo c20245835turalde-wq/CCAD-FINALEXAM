@@ -23,28 +23,29 @@ export default function ApplianceCreate() {
     }
 
     return (
-        <AppLayout breadcrumbs={[{ title: 'Appliances', href: '/appliances' }, { title: 'Register appliance', href: '/appliances/create' }]}>
+        <AppLayout
+            breadcrumbs={[
+                { title: 'Appliances', href: '/appliances' },
+                { title: 'Register appliance', href: '/appliances/create' },
+            ]}
+        >
             <Head title="Register appliance" />
             <div className="max-w-2xl space-y-6 p-4">
                 <h1 className="text-2xl font-semibold">Register appliance</h1>
                 <form onSubmit={submit} className="grid gap-5">
-                    {([
-                        ['customer_name', 'Customer name', 'text'],
-                        ['customer_phone', 'Customer phone', 'tel'],
-                        ['model_number', 'Model number', 'text'],
-                        ['serial_number', 'Serial number', 'text'],
-                        ['purchase_date', 'Purchase date', 'date'],
-                        ['warranty_expiry', 'Warranty expiry', 'date'],
-                    ] as const).map(([field, label, type]) => (
+                    {(
+                        [
+                            ['customer_name', 'Customer name', 'text'],
+                            ['customer_phone', 'Customer phone', 'tel'],
+                            ['model_number', 'Model number', 'text'],
+                            ['serial_number', 'Serial number', 'text'],
+                            ['purchase_date', 'Purchase date', 'date'],
+                            ['warranty_expiry', 'Warranty expiry', 'date'],
+                        ] as const
+                    ).map(([field, label, type]) => (
                         <div key={field} className="grid gap-2">
                             <Label htmlFor={field}>{label}</Label>
-                            <Input
-                                id={field}
-                                type={type}
-                                value={data[field]}
-                                onChange={(event) => setData(field, event.target.value)}
-                                required
-                            />
+                            <Input id={field} type={type} value={data[field]} onChange={(event) => setData(field, event.target.value)} required />
                             <InputError message={errors[field]} />
                         </div>
                     ))}
@@ -52,7 +53,7 @@ export default function ApplianceCreate() {
                         <Label htmlFor="appliance_type">Appliance type</Label>
                         <select
                             id="appliance_type"
-                            className="h-10 rounded-md border border-input bg-background px-3"
+                            className="border-input bg-background h-10 rounded-md border px-3"
                             value={data.appliance_type}
                             onChange={(event) => setData('appliance_type', event.target.value)}
                             required
