@@ -7,11 +7,55 @@ use App\Models\Customer;
 use App\Models\WarrantyClaim;
 use App\Models\WarrantyPolicy;
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class WarrantyService
 {
+    public function applianceListings(): LengthAwarePaginator
+    {
+        return Appliance::query()
+            ->select(['id', 'customer_id', 'appliance_type', 'model_number', 'serial_number', 'purchase_date'])
+            ->with([
+                'customer:id,name,phone',
+                'warrantyPolicy:id,appliance_id,warranty_expiry',
+            ])
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->withQueryString();
+    }
+
+    public function claimListings(): LengthAwarePaginator
+    {
+        return WarrantyClaim::query()
+            ->select(['id', 'warranty_policy_id', 'claim_date', 'defect_description', 'claim_status'])
+            ->with([
+                'warrantyPolicy:id,appliance_id',
+                'warrantyPolicy.appliance:id,customer_id,appliance_type,serial_number',
+                'warrantyPolicy.appliance.customer:id,name',
+                'payout:id,warranty_claim_id,approved_amount',
+            ])
+            ->orderByDesc('claim_date')
+            ->paginate(15)
+            ->withQueryString();
+    }
+
+    public function appliancesForClaimForm(): Collection
+    {
+        return Appliance::query()
+            ->select(['id', 'customer_id', 'appliance_type', 'serial_number'])
+            ->with('customer:id,name')
+            ->orderBy('serial_number')
+            ->get();
+    }
+
+    public function hasAppliances(): bool
+    {
+        return Appliance::exists();
+    }
+
     public function createAppliance(array $data): Appliance
     {
         return DB::transaction(function () use ($data) {

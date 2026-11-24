@@ -21,7 +21,7 @@ class WarrantyClaim extends Model
     protected function casts(): array
     {
         return [
-            'claim_date' => 'date',
+            'claim_date' => 'date:Y-m-d',
         ];
     }
 

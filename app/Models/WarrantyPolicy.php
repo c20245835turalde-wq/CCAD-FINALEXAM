@@ -19,7 +19,7 @@ class WarrantyPolicy extends Model
     protected function casts(): array
     {
         return [
-            'warranty_expiry' => 'date',
+            'warranty_expiry' => 'date:Y-m-d',
         ];
     }
 

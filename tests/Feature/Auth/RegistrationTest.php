@@ -28,4 +28,19 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
     }
+
+    public function test_registration_sanitizes_the_name_and_normalizes_the_email()
+    {
+        $this->post('/register', [
+            'name' => ' <b>Test User</b> ',
+            'email' => ' TEST@EXAMPLE.COM ',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertRedirect(route('dashboard', absolute: false));
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+    }
 }

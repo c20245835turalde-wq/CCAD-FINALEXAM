@@ -31,7 +31,6 @@ export default function ApplianceCreate() {
                     {([
                         ['customer_name', 'Customer name', 'text'],
                         ['customer_phone', 'Customer phone', 'tel'],
-                        ['appliance_type', 'Appliance type', 'text'],
                         ['model_number', 'Model number', 'text'],
                         ['serial_number', 'Serial number', 'text'],
                         ['purchase_date', 'Purchase date', 'date'],
@@ -49,6 +48,22 @@ export default function ApplianceCreate() {
                             <InputError message={errors[field]} />
                         </div>
                     ))}
+                    <div className="grid gap-2">
+                        <Label htmlFor="appliance_type">Appliance type</Label>
+                        <select
+                            id="appliance_type"
+                            className="h-10 rounded-md border border-input bg-background px-3"
+                            value={data.appliance_type}
+                            onChange={(event) => setData('appliance_type', event.target.value)}
+                            required
+                        >
+                            <option value="">Select an appliance type</option>
+                            <option value="Major appliances">Major appliances</option>
+                            <option value="Small Appliances">Small Appliances</option>
+                            <option value="Consumer electronic">Consumer electronic</option>
+                        </select>
+                        <InputError message={errors.appliance_type} />
+                    </div>
                     <div className="flex gap-3">
                         <Button disabled={processing}>Save appliance</Button>
                         <Button asChild variant="outline">

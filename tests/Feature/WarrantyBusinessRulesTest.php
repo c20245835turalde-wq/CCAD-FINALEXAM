@@ -45,6 +45,49 @@ class WarrantyBusinessRulesTest extends TestCase
         ]);
     }
 
+    public function test_appliance_form_rejects_phone_numbers_with_non_phone_characters(): void
+    {
+        $this->actingAs(User::factory()->create());
+
+        $this->post('/appliances', [
+            'customer_name' => 'Jamie Rivera',
+            'customer_phone' => '555-01AB',
+            'appliance_type' => 'Refrigerator',
+            'model_number' => 'model-rf1',
+            'serial_number' => 'sn-100',
+            'purchase_date' => today()->subYear()->toDateString(),
+            'warranty_expiry' => today()->addYear()->toDateString(),
+        ])->assertSessionHasErrors('customer_phone');
+
+        $this->assertDatabaseCount('customers', 0);
+    }
+
+    public function test_claim_form_trims_and_strips_markup_from_the_defect_description(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $appliance = app(WarrantyService::class)->createAppliance([
+            'customer_name' => 'Jamie Rivera',
+            'customer_phone' => '555-0100',
+            'appliance_type' => 'Refrigerator',
+            'model_number' => 'MODEL-RF1',
+            'serial_number' => 'SN-100',
+            'purchase_date' => today()->subYear()->toDateString(),
+            'warranty_expiry' => today()->addYear()->toDateString(),
+        ]);
+
+        $this->post('/warranty-claims', [
+            'appliance_id' => $appliance->id,
+            'claim_date' => today()->toDateString(),
+            'defect_description' => ' <p>Cooling issue</p> ',
+            'claim_status' => ' PENDING ',
+        ])->assertRedirect('/warranty-claims');
+
+        $this->assertDatabaseHas('warranty_claims', [
+            'defect_description' => 'Cooling issue',
+            'claim_status' => 'pending',
+        ]);
+    }
+
     public function test_appliance_update_works_with_selected_relationship_columns(): void
     {
         $service = app(WarrantyService::class);

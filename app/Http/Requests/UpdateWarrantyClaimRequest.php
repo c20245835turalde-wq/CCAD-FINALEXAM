@@ -2,12 +2,28 @@
 
 namespace App\Http\Requests;
 
-use App\Models\WarrantyClaim;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateWarrantyClaimRequest extends FormRequest
 {
+    use Concerns\SanitizesInput;
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge($this->sanitizedStrings([
+            'appliance_id',
+            'claim_date',
+            'defect_description',
+            'claim_status',
+            'approved_amount',
+        ]));
+
+        if (is_string($this->input('claim_status'))) {
+            $this->merge(['claim_status' => strtolower($this->input('claim_status'))]);
+        }
+    }
+
     public function authorize(): bool
     {
         return true;

@@ -9,16 +9,23 @@ use Illuminate\Validation\Rule;
 
 class UpdateApplianceRequest extends FormRequest
 {
+    use Concerns\SanitizesInput;
+
     protected function prepareForValidation(): void
     {
-        $phone = trim(strip_tags((string) $this->input('customer_phone', '')));
-        $serialNumber = mb_strtoupper(trim(strip_tags((string) $this->input('serial_number', ''))));
-        $digits = preg_replace('/\D+/', '', $phone);
+        $this->merge($this->sanitizedStrings([
+            'customer_name',
+            'customer_phone',
+            'appliance_type',
+            'model_number',
+            'serial_number',
+            'purchase_date',
+            'warranty_expiry',
+        ]));
 
-        $this->merge([
-            'customer_phone' => (str_starts_with($phone, '+') ? '+' : '').$digits,
-            'serial_number' => $serialNumber,
-        ]);
+        if (is_string($this->input('serial_number'))) {
+            $this->merge(['serial_number' => mb_strtoupper($this->input('serial_number'))]);
+        }
     }
 
     public function authorize(): bool
@@ -37,7 +44,7 @@ class UpdateApplianceRequest extends FormRequest
 
         return [
             'customer_name' => ['required', 'string', 'max:255'],
-            'customer_phone' => ['required', 'string', 'max:30', 'regex:/^\+?[0-9\s().-]+$/', Rule::unique('customers', 'phone')->ignore($customerId)],
+            'customer_phone' => ['required', 'string', 'max:30', 'regex:/^(?=.*\d)\+?[0-9\s().-]+$/', Rule::unique('customers', 'phone')->ignore($customerId)],
             'appliance_type' => ['required', 'string', 'max:100'],
             'model_number' => ['required', 'string', 'max:100'],
             'serial_number' => ['required', 'string', 'max:100', Rule::unique('appliances', 'serial_number')->ignore($applianceId)],
